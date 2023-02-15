@@ -1,5 +1,6 @@
-
-import { TRAINING_DATA } from 'https://storage.googleapis.com/jmstore/TensorFlowJS/EdX/TrainingData/real-estate-data.js';
+import {
+    TRAINING_DATA
+} from 'https://storage.googleapis.com/jmstore/TensorFlowJS/EdX/TrainingData/real-estate-data.js';
 
 // Input feature pairs (House size, Number of Bedrooms)
 const INPUTS = TRAINING_DATA.inputs;
@@ -36,7 +37,11 @@ function normalize(tensor, min, max) {
 
         // Calculate the adjusted values divided by the range size as a new Tensor.
         const NORMALIZED_VALUES = tf.div(TENSOR_SUBTRACT_MIN_VALUE, RANGE_SIZE);
-        return { NORMALIZED_VALUES, MIN_VALUES, MAX_VALUES };
+        return {
+            NORMALIZED_VALUES,
+            MIN_VALUES,
+            MAX_VALUES
+        };
     });
     return result;
 }
@@ -66,8 +71,10 @@ TFJS.save = async () => {
 
 function evaluate() {
     // Predict answer for a single piece of data.
-    tf.tidy(function () {
-        let newInput = normalize(tf.tensor2d([[750, 1]]), FEATURE_RESULTS.MIN_VALUES, FEATURE_RESULTS.MAX_VALUES);
+    tf.tidy(function() {
+        let newInput = normalize(tf.tensor2d([
+            [750, 1]
+            ]), FEATURE_RESULTS.MIN_VALUES, FEATURE_RESULTS.MAX_VALUES);
         let output = model.predict(newInput.NORMALIZED_VALUES);
         output.print();
     });
@@ -92,9 +99,9 @@ async function train() {
     // Finally do the training itself.
     let results = await model.fit(FEATURE_RESULTS.NORMALIZED_VALUES, OUTPUTS_TENSOR, {
         validationSplit: 0.15, // Take aside 15% of the data to use for validation testing.
-        shuffle: true,         // Ensure data is shuffled in case it was in an order
-        batchSize: 64,         // As we have a lot of training data, batch size is set to 64.
-        epochs: 10             // Go over the data 10 times!
+        shuffle: true, // Ensure data is shuffled in case it was in an order
+        batchSize: 64, // As we have a lot of training data, batch size is set to 64.
+        epochs: 10 // Go over the data 10 times!
 
     });
 
@@ -109,11 +116,10 @@ async function train() {
 
 // Model
 const model = tf.sequential();
-model.add(tf.layers.dense({ inputShape: [2], units: 1 }));
+model.add(tf.layers.dense({
+    inputShape: [2],
+    units: 1
+}));
 model.summary();
 
 TFJS.train = train;
-
-
-
-
