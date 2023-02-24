@@ -65,16 +65,16 @@ INPUTS_TENSOR.dispose();
  * 
  */
 TFJS.save = async () => {
-    await model.save('downloads://my-model');
+    await model.save('downloads://linear-model');
     model.dispose();
 };
 
 function evaluate() {
     // Predict answer for a single piece of data.
-    tf.tidy(function() {
+    tf.tidy(function () {
         let newInput = normalize(tf.tensor2d([
             [750, 1]
-            ]), FEATURE_RESULTS.MIN_VALUES, FEATURE_RESULTS.MAX_VALUES);
+        ]), FEATURE_RESULTS.MIN_VALUES, FEATURE_RESULTS.MAX_VALUES);
         let output = model.predict(newInput.NORMALIZED_VALUES);
         output.print();
     });

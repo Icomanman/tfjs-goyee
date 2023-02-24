@@ -50,4 +50,5 @@ const readDataArr = async (file) => {
     //     ]
     // });
 
+    // model.summary();
 })();
