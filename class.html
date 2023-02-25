@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Classification Demo</title>
+   <link rel="stylesheet" href="/class.css">
+</head>
+
+<body>
+   <section class="box">
+      <h2>Input Image</h2>
+      <p>Input image is a 28x28 pixel greyscale image from MNIST.</p>
+      <canvas id="canvas" width="28" height="28"></canvas>
+   </section>
+
+   <section class="box">
+      <h2>Prediction</h2>
+      <p>Red is the wrong one. Green is the correct one.</p>
+      <p id="prediction"> Training model...Please wait</p>
+   </section>
+
+   <script type="text/javascript" src="/demo/globals.js"></script>
+   <script type="text/javascript" src="dist/tf.min.js"></script>
+   <script type="module" src="/demo/classification.mjs"></script>
+</body>
+
+</html>
