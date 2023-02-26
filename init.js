@@ -3,15 +3,23 @@ const express = require('express');
 const child_process = require('child_process');
 
 const app = express();
+let view = '';
+if ((process.argv).length > 2) {
+    view = `${process.argv[2]}.html`;
+}
 const PORT = process.env.PORT || 8080;
-const URL = `http://localhost:${PORT}`;
+const URL = `http://localhost:${PORT}/${view}`;
 
 
 app.listen(PORT, () => {
     console.log('Server listening on PORT ' + PORT);
 });
 
-app.use('/', express.static('.'));
+app.use('/', express.static('./demo/views'));
+app.use('/dist', express.static('./dist'));
+app.use('/js', express.static('./demo/js'));
+app.use('/modules', express.static('./demo/modules'));
+app.use('/css', express.static('./demo/css'));
 
 // Open the browser:
 let start = "xdg-open";
