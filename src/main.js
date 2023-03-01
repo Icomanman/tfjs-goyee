@@ -1,15 +1,7 @@
 
-const fs = require('fs');
-const path = require('path');
-const readline = require('readline');
-
+const readDataArr = require('./../helpers/readData.js');
 const tf = require('@tensorflow/tfjs-node');
-
 console.log('> Tensorflow is running using: ' + tf.getBackend());
-
-const data_path = path.resolve(process.cwd(), 'src/dat');
-const src_dat = `${data_path}/64923022023.txt`;
-const dat = fs.readFileSync(`${src_dat}`, 'utf-8');
 
 const LEARNING_RATE = 0.000001;
 const OPTIMISER = tf.train.sgd(LEARNING_RATE);
@@ -19,35 +11,7 @@ const logProgress = (epoch, logs) => {
     if (epoch == 15) {
         OPTIMISER.setLearningRate(LEARNING_RATE / 2);
     }
-}
-
-const readDataArr = async (file) => {
-    const rows = [];
-    const rl = readline.createInterface({
-        input: fs.createReadStream(file),
-        output: process.stdout,
-        terminal: false,
-    });
-    return await new Promise(resolve => {
-        rl.on('line', line => {
-            const new_line = [];
-            let char = '';
-            for (let s = 0; s < line.length; s++) {
-                if (line[s] != '\t') {
-                    char = char.concat(line[s]);
-                } else {
-                    new_line.push(parseInt(char));
-                    char = '';
-                };
-            }
-            new_line.push(parseInt(char));
-            rows.push(new_line);
-        }).on('close', () => {
-            resolve(rows);
-            console.log('> EOF');
-        });
-    })
-}
+};
 
 (async function main() {
     // Base input:
@@ -57,7 +21,7 @@ const readDataArr = async (file) => {
         base_arr.push(i + 1);
     }
 
-    const data_arr = await readDataArr(src_dat);
+    const data_arr = await readDataArr('64923022023.txt');
     const INPUT_DATA = [];
     for (let i = 0; i < data_arr.length; i++) {
         const new_arr = JSON.parse(JSON.stringify(base_arr));
