@@ -1,5 +1,5 @@
 
-const readDataArr = require('./../helpers/readData.js');
+const { extractSyntheticData, straightRange } = require('./../helpers/synthetic.js');
 const tf = require('@tensorflow/tfjs-node');
 console.log('> Tensorflow is running using: ' + tf.getBackend());
 
@@ -14,24 +14,13 @@ const logProgress = (epoch, logs) => {
 };
 
 (async function main() {
-    // Base input:
-    const BASE = 49;
-    const base_arr = [];
-    for (let i = 0; i < BASE; i++) {
-        base_arr.push(i + 1);
-    }
-
-    const data_arr = await readDataArr('64923022023.txt');
-    const INPUT_DATA = [];
-    for (let i = 0; i < data_arr.length; i++) {
-        const new_arr = JSON.parse(JSON.stringify(base_arr));
-        tf.util.shuffle(new_arr)
-        INPUT_DATA.push(new_arr);
-        // INPUT_DATA.push(base_arr);
-    }
+    // const straight_data = await straightRange('64923022023.txt');
+    const synthetic_data = await extractSyntheticData('64923022023.txt');
+    const INPUT_DATA = synthetic_data.input;
+    const OUTPUT_DATA = synthetic_data.output;
 
     const INPUT_TENSOR = tf.tensor2d(INPUT_DATA);
-    const OUTPUT_TENSOR = tf.tensor2d(data_arr);
+    const OUTPUT_TENSOR = tf.tensor2d(OUTPUT_DATA);
 
     const model = tf.sequential({
         layers: [
