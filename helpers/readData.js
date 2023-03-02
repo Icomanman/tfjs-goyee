@@ -28,7 +28,7 @@ const readDataArr = async file => {
             rows.push(new_line);
         }).on('close', () => {
             resolve(rows);
-            console.log('> EOF');
+            // console.log('> EOF');
         });
     })
 };
