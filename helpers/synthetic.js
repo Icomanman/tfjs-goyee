@@ -22,6 +22,7 @@ async function straightRange(file) {
 
 
 async function extractSyntheticData(file) {
+    let mult = 0;
     const data_arr = await readDataArr(file);
     const input = [], output = [];
     // First and last twos:
@@ -43,8 +44,18 @@ async function extractSyntheticData(file) {
             // console.log(`> Input: ${input.length}, Output: ${output.length}`);
             // console.log('> set');
         });
+        mult++;
     }
-    return { input, output };
+
+    // Middle two:
+    data_arr.forEach(set => {
+        input.push([set[2], set[3]]);
+        set.splice(2, 2);
+        output.push(set);
+    });
+    mult++;
+
+    return { data_arr, input, output, mult };
 }
 
 module.exports = { extractSyntheticData, straightRange };
