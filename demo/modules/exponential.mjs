@@ -121,14 +121,14 @@ model.add(tf.layers.dense({ units: 5, activation: 'relu' }));
 model.add(tf.layers.dense({ units: 1 }));
 model.summary();
 
-TFJS.eval = evaluate;
 TFJS.dispose = model.dispose;
+TFJS.eval = evaluate;
+TFJS.train = train;
 
 TFJS.trainAsync = async () => {
     console.log('> Training...');
     await train();
 }
 
-TFJS.train = train;
 
 
