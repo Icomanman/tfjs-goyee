@@ -1,10 +1,8 @@
 
-const { extractSyntheticData, straightRange } = require('./../helpers/synthetic.js');
-const tf = require('@tensorflow/tfjs-node');
-console.log('> Tensorflow is running using: ' + tf.getBackend());
-
 const LEARNING_RATE = 0.000001;
 const OPTIMISER = tf.train.sgd(LEARNING_RATE);
+
+console.log('> Tensorflow is running using: ' + tf.getBackend());
 
 const logProgress = (epoch, logs) => {
     console.log('Data for epoch ' + epoch, Math.sqrt(logs.loss));
@@ -13,11 +11,10 @@ const logProgress = (epoch, logs) => {
     }
 };
 
-(async function main() {
-    // const straight_data = await straightRange('64923022023.txt');
-    const synthetic_data = await extractSyntheticData('64923022023.txt');
-    const INPUT_DATA = synthetic_data.input;
-    const OUTPUT_DATA = synthetic_data.output;
+TFJS.MAIN = async function main() {
+    // from data.js:
+    const INPUT_DATA = DATA.INPUT;
+    const OUTPUT_DATA = DATA.OUTPUT;
 
     const INPUT_TENSOR = tf.tensor2d(INPUT_DATA);
     const OUTPUT_TENSOR = tf.tensor2d(OUTPUT_DATA);
@@ -52,4 +49,4 @@ const logProgress = (epoch, logs) => {
     OUTPUT_TENSOR.dispose();
     INPUT_TENSOR.dispose();
     model.dispose();
-})();
+};

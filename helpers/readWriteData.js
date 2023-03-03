@@ -33,4 +33,13 @@ const readDataArr = async file => {
     })
 };
 
-module.exports = readDataArr;
+const writeData = (data, file) => {
+    try {
+        fs.writeFileSync(`${process.cwd()}/dist/${file}`, data, { encoding: 'utf-8', flag: 'w+' });
+    } catch {
+        fs.createWriteStream(`./../dist/${file}`).end();
+        fs.writeFileSync(`${process.cwd()}/dist/${file}`, data, { encoding: 'utf-8', flag: 'w+' });
+    }
+};
+
+module.exports = { readDataArr, writeData };

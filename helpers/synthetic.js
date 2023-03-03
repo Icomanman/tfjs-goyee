@@ -1,5 +1,5 @@
 
-const readDataArr = require('./readData.js');
+const { readDataArr, writeData } = require('./readWriteData.js');
 
 async function straightRange(file) {
     const output = await readDataArr(file);
@@ -100,6 +100,11 @@ async function extractSyntheticData(file) {
         output.push(set);
     });
     mult++;
+
+    // const data = {
+    //     INPUT: input, OUTPUT: output
+    // }
+    // writeData(JSON.stringify(data), 'data.js');
 
     return { src_arr, input, output, mult };
 }

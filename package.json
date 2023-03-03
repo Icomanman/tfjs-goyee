@@ -16,7 +16,6 @@
     "nodemon": "^2.0.20"
   },
   "dependencies": {
-    "@tensorflow/tfjs-node": "^4.2.0",
-    "@tensorflow/tfjs-node-gpu": "^4.2.0"
+    "@tensorflow/tfjs-node": "^4.2.0"
   }
 }
