@@ -65,12 +65,88 @@ describe('> Synthetic Data Test', () => {
         assert.equal(last[3], last_output[3], '> Last-Two output: 3');
     });
 
-    /**
-     * TODO
-     * Middle-Two
-     * Middle-First
-     * Middle-Last
-     * First-Last
-     */
+    it('5. Middle-Two elements should match.', () => {
+        const i = parseInt(Math.random() * src_length);
+        const j = (2 * src_length) + i;
+        const middle = src_arr[i];
+        const middle_input = input[j];
+        const middle_output = output[j];
 
+        const middle_copy = JSON.parse(JSON.stringify(middle_output));
+        middle_copy.splice(2, 0, middle_input);
+
+        console.log(`\t> Test indices: ${i}, ${j}`);
+        console.log('\t', middle, middle_copy);
+        assert.equal(middle[2], middle_input[0], '> Middle-Two input: 0');
+        assert.equal(middle[3], middle_input[1], '> Middle-Two input: 1');
+
+        assert.equal(middle[0], middle_output[0], '> Middle-Two output: 0');
+        assert.equal(middle[1], middle_output[1], '> Middle-Two output: 1');
+
+        assert.equal(middle[4], middle_output[2], '> Middle-Two output: 2');
+        assert.equal(middle[5], middle_output[3], '> Middle-Two output: 3');
+    });
+
+    it('6. Middle-Left elements should match.', () => {
+        const i = parseInt(Math.random() * src_length);
+        const j = (3 * src_length) + i;
+        const midleft = src_arr[i];
+        const midleft_input = input[j];
+        const midleft_output = output[j];
+
+        const middle_copy = JSON.parse(JSON.stringify(midleft_output));
+        middle_copy.splice(1, 0, midleft_input);
+
+        console.log(`\t> Test indices: ${i}, ${j}`);
+        console.log('\t', midleft, middle_copy);
+        assert.equal(midleft[1], midleft_input[0], '> Middle-Left input: 0');
+        assert.equal(midleft[2], midleft_input[1], '> Middle-Left input: 1');
+
+        assert.equal(midleft[0], midleft_output[0], '> Middle-Left output: 0');
+        assert.equal(midleft[3], midleft_output[1], '> Middle-Left output: 1');
+
+        assert.equal(midleft[4], midleft_output[2], '> Middle-Left output: 2');
+        assert.equal(midleft[5], midleft_output[3], '> Middle-Left output: 3');
+    });
+
+    it('7. Middle-Right elements should match.', () => {
+        const i = parseInt(Math.random() * src_length);
+        const j = (4 * src_length) + i;
+        const midright = src_arr[i];
+        const midright_input = input[j];
+        const midright_output = output[j];
+
+        const middle_copy = JSON.parse(JSON.stringify(midright_output));
+        middle_copy.splice(3, 0, midright_input);
+
+        console.log(`\t> Test indices: ${i}, ${j}`);
+        console.log('\t', midright, middle_copy);
+        assert.equal(midright[3], midright_input[0], '> Middle-Right input: 0');
+        assert.equal(midright[4], midright_input[1], '> Middle-Right input: 1');
+
+        assert.equal(midright[0], midright_output[0], '> Middle-Right output: 0');
+        assert.equal(midright[1], midright_output[1], '> Middle-Right output: 1');
+
+        assert.equal(midright[2], midright_output[2], '> Middle-Right output: 2');
+        assert.equal(midright[5], midright_output[3], '> Middle-Right output: 3');
+    });
+
+    it('8. First and Last elements should match.', () => {
+        const i = parseInt(Math.random() * src_length);
+        const j = (5 * src_length) + i;
+        const ends = src_arr[i];
+        const ends_input = input[j];
+        const ends_output = output[j];
+
+        const ends_copy = JSON.parse(JSON.stringify(ends_output));
+        ends_copy.splice(0, 0, [ends_input[0]]);
+        ends_copy.splice(5, 0, [ends_input[1]]);
+
+        console.log(`\t> Test indices: ${i}, ${j}`);
+        console.log('\t', ends, ends_copy);
+        ends_copy.forEach((el, i) => {
+            // loose assertion but works: ends_copy contains array elements, first and last (03 March 2023)
+            assert.equal(ends[i], ends_copy[i], `> First-Last entry: ${i}`);
+        });
+    });
 });

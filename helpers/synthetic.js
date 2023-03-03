@@ -59,6 +59,48 @@ async function extractSyntheticData(file) {
     });
     mult++;
 
+    /*
+        //  MUCH SLOWER, although more elegant it seems: 03 March 2023
+        // First sweep of elements - by twos:
+        for (let i = 0; i < src_arr.length; i += 2) {
+            let data_arr = JSON.parse(JSON.stringify(src_arr));
+            data_arr.forEach(set => {
+                input.push([set[i], set[i + 1]]);
+                set.splice(i, 2);
+                output.push(set);
+            });
+            mult++;
+        }
+    */
+
+    // Middle-Left two elements:
+    data_arr = JSON.parse(JSON.stringify(src_arr));
+    data_arr.forEach(set => {
+        input.push([set[1], set[2]]);
+        set.splice(1, 2);
+        output.push(set);
+    });
+    mult++;
+
+    // Middle-Right two elements:
+    data_arr = JSON.parse(JSON.stringify(src_arr));
+    data_arr.forEach(set => {
+        input.push([set[3], set[4]]);
+        set.splice(3, 2);
+        output.push(set);
+    });
+    mult++;
+
+    // First-Last elements:
+    data_arr = JSON.parse(JSON.stringify(src_arr));
+    data_arr.forEach(set => {
+        input.push([set[0], set[5]]);
+        set.pop();
+        set.shift();
+        output.push(set);
+    });
+    mult++;
+
     return { src_arr, input, output, mult };
 }
 
