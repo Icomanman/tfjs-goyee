@@ -1,52 +1,7 @@
 
-const LEARNING_RATE = 0.000001;
-const OPTIMISER = tf.train.sgd(LEARNING_RATE);
+import * as model_src from './../../src/model.js';
+import data_src from './../../dist/data-export.js';
 
-console.log('> Tensorflow is running using: ' + tf.getBackend());
-
-const logProgress = (epoch, logs) => {
-    console.log('Data for epoch ' + epoch, Math.sqrt(logs.loss));
-    if (epoch == 15) {
-        OPTIMISER.setLearningRate(LEARNING_RATE / 2);
-    }
-};
-
-TFJS.MAIN = async function main() {
-    // from data.js:
-    const INPUT_DATA = DATA.INPUT;
-    const OUTPUT_DATA = DATA.OUTPUT;
-
-    const INPUT_TENSOR = tf.tensor2d(INPUT_DATA);
-    const OUTPUT_TENSOR = tf.tensor2d(OUTPUT_DATA);
-
-    const model = tf.sequential({
-        layers: [
-            tf.layers.dense({ inputShape: [2], units: 12, activation: 'relu' }),
-            tf.layers.dense({ units: 18, activation: 'relu' }),
-            tf.layers.dense({ units: 4 }),
-        ]
-    });
-
-    model.summary();
-    model.compile({
-        optimizer: OPTIMISER,
-        loss: 'meanSquaredError'
-    });
-
-    let results = await model.fit(INPUT_TENSOR, OUTPUT_TENSOR, {
-        callbacks: { onEpochEnd: logProgress },
-        shuffle: true,
-        batchSize: 60,
-        epochs: 10,
-    });
-
-    tf.tidy(function () {
-        let newInput = tf.tensor2d([INPUT_DATA[0]]);
-        let output = model.predict(newInput);
-        output.print();
-    });
-
-    OUTPUT_TENSOR.dispose();
-    INPUT_TENSOR.dispose();
-    model.dispose();
-};
+// 05 March 2023
+TFJS.DAT = data_src; // Here we have an explicit statement: 'export default'
+TFJS.MAIN = model_src.default; // However, here exports are assign to 'default' because of 'module.exports'

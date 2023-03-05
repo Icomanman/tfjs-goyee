@@ -101,11 +101,6 @@ async function extractSyntheticData(file) {
     });
     mult++;
 
-    // const data = {
-    //     INPUT: input, OUTPUT: output
-    // }
-    // writeData(JSON.stringify(data), 'data.js');
-
     return { src_arr, input, output, mult };
 }
 

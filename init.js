@@ -20,6 +20,7 @@ app.use('/dist', express.static('./dist'));
 app.use('/js', express.static('./demo/js'));
 app.use('/modules', express.static('./demo/modules'));
 app.use('/css', express.static('./demo/css'));
+app.use('/helpers', express.static('./helpers'));
 
 // Open the browser:
 let start = "xdg-open";
