@@ -1,17 +1,27 @@
 
 console.log('> Tensorflow is running using: ' + tf.getBackend());
 
-const LEARNING_RATE = 0.000001;
-const OPTIMISER = tf.train.sgd(LEARNING_RATE);
+const LEARNING_RATE = 0.0001;
+const OPTIMISER = tf.train.adam(LEARNING_RATE);
 
 const logProgress = (epoch, logs) => {
     console.log('Data for epoch ' + epoch, Math.sqrt(logs.loss));
-    if (epoch == 15) {
-        OPTIMISER.setLearningRate(LEARNING_RATE / 2);
+    if (epoch == 19) {
+        // OPTIMISER.setLearningRate(LEARNING_RATE / 2);
+        console.log(logs);
     }
 };
 
-async function main(INPUT_DATA, OUTPUT_DATA) {
+function evaluate(model, input) {
+    tf.tidy(function () {
+        let newInput = tf.tensor2d([input]);
+        let output = model.predict(newInput);
+        output.print();
+        newInput.print();
+    });
+};
+
+async function train(INPUT_DATA, OUTPUT_DATA) {
     const INPUT_TENSOR = tf.tensor2d(INPUT_DATA);
     const OUTPUT_TENSOR = tf.tensor2d(OUTPUT_DATA);
 
@@ -26,25 +36,22 @@ async function main(INPUT_DATA, OUTPUT_DATA) {
     model.summary();
     model.compile({
         optimizer: OPTIMISER,
-        loss: 'meanSquaredError'
+        loss: 'meanSquaredError',
+        // metrics: ['accuracy']
     });
 
     let results = await model.fit(INPUT_TENSOR, OUTPUT_TENSOR, {
+        batchSize: 120,
         callbacks: { onEpochEnd: logProgress },
+        epochs: 20,
         shuffle: true,
-        batchSize: 60,
-        epochs: 10,
-    });
-
-    tf.tidy(function () {
-        let newInput = tf.tensor2d([INPUT_DATA[0]]);
-        let output = model.predict(newInput);
-        output.print();
+        validationSplit: 0.2
     });
 
     OUTPUT_TENSOR.dispose();
     INPUT_TENSOR.dispose();
-    model.dispose();
+    // model.dispose();
+    return model;
 };
 
-module.exports = main;
+module.exports = { train, evaluate };

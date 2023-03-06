@@ -1,7 +1,16 @@
 
 import * as model_src from './../../src/model.js';
-import data_src from './../../dist/data-export.js';
+import data_src from './../../dist/sorted-export.js';
 
-// 05 March 2023
 TFJS.DAT = data_src; // Here we have an explicit statement: 'export default'
-TFJS.MAIN = model_src.default; // However, here exports are assign to 'default' because of 'module.exports'
+TFJS.model_src = model_src;
+/**
+ * However, 'default' whatever is in 'module.exports'. If it is a single module,
+ * then 'default' would contain that single module (i.e., model_src.default) 
+ */
+TFJS.train = model_src.train;
+TFJS.eval = model_src.evaluate;
+(async () => {
+    TFJS.model = await model_src.train(data_src.INPUT, data_src.OUTPUT);
+})();
+

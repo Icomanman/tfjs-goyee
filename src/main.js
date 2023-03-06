@@ -1,8 +1,7 @@
 
-
 global.tf = require('@tensorflow/tfjs-node');
 
-const model = require('./model.js');
+const { train, evaluate } = require('./model.js');
 const { extractSyntheticData, extractSortedSynthetic, straightRange } = require('../helpers/synthetic.js');
 
 (async () => {
@@ -16,5 +15,6 @@ const { extractSyntheticData, extractSortedSynthetic, straightRange } = require(
     const INPUT_DATA = sorted_data.input;
     const OUTPUT_DATA = sorted_data.output;
 
-    model(INPUT_DATA, OUTPUT_DATA);
+    const model = await train(INPUT_DATA, OUTPUT_DATA);
+    evaluate(model, [11, 29]);
 })();
