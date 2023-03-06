@@ -21,6 +21,24 @@ const OUTPUTS_TENSOR = tf.oneHot(tf.tensor1d(OUTPUTS, 'int32'), 10);
 
 const PREDICTION_ELEMENT = document.getElementById('prediction');
 
+const CANVAS = document.getElementById('canvas');
+const CTX = CANVAS.getContext('2d');
+
+function drawImage(digit) {
+    var imageData = CTX.getImageData(0, 0, 28, 28);
+
+    for (let i = 0; i < digit.length; i++) {
+        imageData.data[i * 4] = digit[i] * 255;     // Red Channel
+        imageData.data[i * 4 + 1] = digit[i] * 255; // Green Channel
+        imageData.data[i * 4 + 2] = digit[i] * 255; // Blue Channel
+        imageData.data[i * 4 + 3] = 255;            // Alpha Channel
+    }
+
+    CTX.putImageData(imageData, 0, 0);
+
+    setTimeout(evaluate, 2000);
+}
+
 function evaluate() {
     const OFFSET = Math.floor((Math.random() * INPUTS.length));
 
@@ -76,3 +94,4 @@ model.summary();
 TFJS.dispose = model.dispose;
 TFJS.eval = evaluate;
 TFJS.train = train;
+train();
