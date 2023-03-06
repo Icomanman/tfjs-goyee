@@ -59,6 +59,10 @@ function evaluate() {
 
 function logProgress(epoch, logs) {
     console.log('Data for epoch ' + epoch, Math.sqrt(logs.loss));
+    if (epoch >= 49) {
+        console.log(`Logs after epoch ${epoch}:`, logs);
+        TFJS.LOGS = logs;
+    }
 }
 
 async function train() {
@@ -80,7 +84,6 @@ async function train() {
 
     OUTPUTS_TENSOR.dispose();
     INPUTS_TENSOR.dispose();
-
     evaluate(); // Once trained evaluate the model.
 }
 

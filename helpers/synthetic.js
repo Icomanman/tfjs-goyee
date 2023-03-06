@@ -104,4 +104,73 @@ async function extractSyntheticData(file) {
     return { src_arr, input, output, mult };
 }
 
-module.exports = { extractSyntheticData, straightRange };
+
+async function extractSortedSynthetic(file) {
+    const src_arr = await readDataArr(file);
+    const sorted_arr = [];
+    // forEach is elegant but the classic for loop seems more efficient 
+    for (i = 0; i < src_arr.length; i++) {
+        let tmp_arr = [];
+        let rem_arr = src_arr[i];
+        for (let j = 0; j < 6; j++) {
+            let max = Math.max(...rem_arr);
+            tmp_arr.push(max);
+            rem_arr = rem_arr.filter(el => el < max);
+        }
+        sorted_arr.push(tmp_arr);
+    }
+
+    let mult = 0;
+    const input = [], output = [];
+
+    // First two elements:
+    let data_arr = JSON.parse(JSON.stringify(sorted_arr));
+    data_arr.forEach(set => {
+        input.push([set[0], set[1]]);
+        set.splice(0, 2);
+        output.push(set);
+        // console.log(`> Input: ${input.length}, Output: ${output.length}`);
+    });
+    mult++;
+
+    // Last two elements:
+    data_arr = JSON.parse(JSON.stringify(sorted_arr));
+    data_arr.forEach(set => {
+        input.push([set[4], set[5]]);
+        set.splice(4, 2);
+        output.push(set);
+        // console.log(`> Input: ${input.length}, Output: ${output.length}`);
+    });
+    mult++;
+
+    // Middle two elements:
+    data_arr = JSON.parse(JSON.stringify(sorted_arr));
+    data_arr.forEach(set => {
+        input.push([set[2], set[3]]);
+        set.splice(2, 2);
+        output.push(set);
+    });
+    mult++;
+
+    // Middle-Left two elements:
+    data_arr = JSON.parse(JSON.stringify(sorted_arr));
+    data_arr.forEach(set => {
+        input.push([set[1], set[2]]);
+        set.splice(1, 2);
+        output.push(set);
+    });
+    mult++;
+
+    // Middle-Right two elements:
+    data_arr = JSON.parse(JSON.stringify(sorted_arr));
+    data_arr.forEach(set => {
+        input.push([set[3], set[4]]);
+        set.splice(3, 2);
+        output.push(set);
+    });
+    mult++;
+
+    return { sorted_arr, input, output, mult };
+}
+
+module.exports = { extractSyntheticData, extractSortedSynthetic, straightRange };
