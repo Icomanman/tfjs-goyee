@@ -16,5 +16,5 @@ const { extractSyntheticData, extractSortedSynthetic, straightRange } = require(
     const OUTPUT_DATA = sorted_data.output;
 
     const model = await train(INPUT_DATA, OUTPUT_DATA);
-    evaluate(model, [11, 29]);
+    evaluate(model, [44, 43]);
 })();

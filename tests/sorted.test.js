@@ -8,6 +8,7 @@ const assert = require('assert');
 const { extractSortedSynthetic } = require('./../helpers/synthetic.js');
 
 let sorted_arr, sorted_length, input, output, mult;
+const freq = [];
 
 beforeEach(async () => {
     sorted_data = await extractSortedSynthetic('64923022023.txt');
@@ -128,5 +129,18 @@ describe('> Synthetic Data Test', () => {
 
         assert.equal(midright[2], midright_output[2], '> Middle-Right output: 2');
         assert.equal(midright[5], midright_output[3], '> Middle-Right output: 3');
+    });
+
+    it('8. Frequency Check', () => {
+        for (let i = 0; i < 49; i++) {
+            freq.push(0);
+        }
+        console.log(freq);
+        for (let j = 0; j < sorted_length; j++) {
+            for (let k = 0; k < 6; k++) {
+                freq[sorted_arr[j][k] - 1]++
+            }
+        }
+        console.log(freq);
     });
 });
